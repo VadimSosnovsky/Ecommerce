@@ -16,6 +16,10 @@
 		8979B480293F302500D93471 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8979B47F293F302500D93471 /* MainViewController.swift */; };
 		8979B482293F306700D93471 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8979B481293F306700D93471 /* MainViewModel.swift */; };
 		8979B485293F329400D93471 /* UIColor + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8979B484293F329400D93471 /* UIColor + Extensions.swift */; };
+		899E2118293FB2850049FD5A /* MarkPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 899E2114293FB2850049FD5A /* MarkPro-Regular.ttf */; };
+		899E2119293FB2850049FD5A /* MarkPro-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 899E2115293FB2850049FD5A /* MarkPro-Medium.ttf */; };
+		899E211A293FB2850049FD5A /* MarkPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 899E2116293FB2850049FD5A /* MarkPro-Bold.ttf */; };
+		899E211B293FB2850049FD5A /* MarkPro-Heavy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 899E2117293FB2850049FD5A /* MarkPro-Heavy.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +34,10 @@
 		8979B47F293F302500D93471 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		8979B481293F306700D93471 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		8979B484293F329400D93471 /* UIColor + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor + Extensions.swift"; sourceTree = "<group>"; };
+		899E2114293FB2850049FD5A /* MarkPro-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MarkPro-Regular.ttf"; sourceTree = "<group>"; };
+		899E2115293FB2850049FD5A /* MarkPro-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MarkPro-Medium.ttf"; sourceTree = "<group>"; };
+		899E2116293FB2850049FD5A /* MarkPro-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MarkPro-Bold.ttf"; sourceTree = "<group>"; };
+		899E2117293FB2850049FD5A /* MarkPro-Heavy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MarkPro-Heavy.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +91,7 @@
 				8979B463293F2D6200D93471 /* Assets.xcassets */,
 				8979B465293F2D6200D93471 /* LaunchScreen.storyboard */,
 				8979B468293F2D6200D93471 /* Info.plist */,
+				899E2107293FAE840049FD5A /* Fonts */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -164,6 +173,17 @@
 			path = UIKit;
 			sourceTree = "<group>";
 		};
+		899E2107293FAE840049FD5A /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				899E2116293FB2850049FD5A /* MarkPro-Bold.ttf */,
+				899E2117293FB2850049FD5A /* MarkPro-Heavy.ttf */,
+				899E2115293FB2850049FD5A /* MarkPro-Medium.ttf */,
+				899E2114293FB2850049FD5A /* MarkPro-Regular.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -222,8 +242,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				899E2119293FB2850049FD5A /* MarkPro-Medium.ttf in Resources */,
 				8979B467293F2D6200D93471 /* LaunchScreen.storyboard in Resources */,
+				899E2118293FB2850049FD5A /* MarkPro-Regular.ttf in Resources */,
+				899E211B293FB2850049FD5A /* MarkPro-Heavy.ttf in Resources */,
 				8979B464293F2D6200D93471 /* Assets.xcassets in Resources */,
+				899E211A293FB2850049FD5A /* MarkPro-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
