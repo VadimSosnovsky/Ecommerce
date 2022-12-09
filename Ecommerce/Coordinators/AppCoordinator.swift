@@ -20,9 +20,9 @@ final class AppCoordinator: Coordinator {
     func start() {
         let navigationController = UINavigationController()
         navigationController.setNavigationBarHidden(true, animated: true)
-        let authCoordinator = MainCoordinator(navigationController: navigationController)
-        childCoordinators.append(authCoordinator)
-        authCoordinator.start()
+        let tabBarCoordinator = EcommerceTabBarCoordinator(navigationController: navigationController)
+        childCoordinators.append(tabBarCoordinator)
+        tabBarCoordinator.start()
         
         window.rootViewController = navigationController
         window.makeKeyAndVisible()

@@ -10,6 +10,7 @@ import UIKit
 final class MainCoordinator: Coordinator {
     
     var childCoordinators: [Coordinator] = []
+    weak var parentCoordinator: EcommerceTabBarCoordinator?
     
     private let navigationController: UINavigationController
     
