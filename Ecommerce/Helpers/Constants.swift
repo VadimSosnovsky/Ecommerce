@@ -10,4 +10,7 @@ import UIKit
 struct Constants {
     static let hotSalesCellWidth = 378
     static let hotSalesCellHeight = 182
+    
+    static let detailCellWidth = 266
+    static let detailCellHeight = 335
 }

@@ -10,6 +10,7 @@ import Alamofire
 
 protocol NetworkServiceProtocol {
     func fetchPhones(completion: @escaping (Phones?) -> Void)
+    func fetchCharasteristics(completion: @escaping (Characteristics?) -> Void)
     func loadImages(from url: URL, completion: @escaping (UIImage) -> Void)
     func decodeJSON<T: Decodable>(_ type: T.Type, data: Data) -> T
     var cache: NSCache<AnyObject, UIImage> { get }
@@ -35,6 +36,24 @@ final class NetworkService: NetworkServiceProtocol {
             
             guard let data = dataResponse.data else { return }
             let resultData = self.decodeJSON(Phones.self, data: data)
+            completion(resultData)
+        }
+    }
+    
+    func fetchCharasteristics(completion: @escaping (Characteristics?) -> Void) {
+        let url = Environment.searchDetailsURL
+        AF.request(url,
+                   method: .get,
+                   parameters: nil,
+                   encoding: URLEncoding.default,
+                   headers: nil).responseData { (dataResponse) in
+            if let error = dataResponse.error {
+                print("Error: \(error)")
+            }
+            
+            guard let data = dataResponse.data else { return }
+            let resultData = self.decodeJSON(Characteristics.self, data: data)
+            print(resultData)
             completion(resultData)
         }
     }

@@ -27,6 +27,9 @@ class HotSalesCollectionViewCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        layer.cornerRadius = 10
+        clipsToBounds = true
+        
         
         buyButton.backgroundColor = .white
         buyButton.layer.cornerRadius = 5

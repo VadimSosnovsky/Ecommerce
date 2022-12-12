@@ -25,5 +25,12 @@ final class MainCoordinator: Coordinator {
         mainViewController.viewModel = mainViewModel
         navigationController.setViewControllers([mainViewController], animated: true)
     }
+    
+    func startDetailScene(withCharacteristics charasteristics: Characteristics) {
+        let detailCoordinator = DetailCoordinator(navigationController: navigationController, characteristics: charasteristics)
+        detailCoordinator.parentCoordinator = self
+        childCoordinators.append(detailCoordinator)
+        detailCoordinator.start()
+    }
 }
 

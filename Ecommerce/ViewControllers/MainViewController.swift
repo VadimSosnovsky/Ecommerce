@@ -9,47 +9,13 @@ import UIKit
 
 class MainViewController: UIViewController {
     
-    private let topView: UIView = {
-       let view = UIView()
-        view.backgroundColor = .systemTeal
-        return view
-    }()
-    
-    private let hotSalesView: UIView = {
-       let view = UIView()
-        view.backgroundColor = .brown
-        return view
-    }()
-    
-    private let bestSellerView: UIView = {
-       let view = UIView()
-        view.backgroundColor = .systemCyan
-        return view
-    }()
-    
-    private let headerView: UIView = {
-       let view = UIView()
-        view.backgroundColor = .orange
-        return view
-    }()
-    
-    private let selectCategoryView: UIView = {
-       let view = UIView()
-        view.backgroundColor = .red
-        return view
-    }()
-    
-    private let hotSalesTopView: UIView = {
-       let view = UIView()
-        view.backgroundColor = .magenta
-        return view
-    }()
-    
-    private let bestSellerTopView: UIView = {
-       let view = UIView()
-        view.backgroundColor = .orange
-        return view
-    }()
+    private let topView = createView()
+    private let hotSalesView = createView()
+    private let bestSellerView = createView()
+    private let headerView = createView()
+    private let selectCategoryView = createView()
+    private let hotSalesTopView = createView()
+    private let bestSellerTopView = createView()
     
     let filterModalViewController = FilterModalViewController()
     
@@ -84,8 +50,8 @@ class MainViewController: UIViewController {
     
     var viewModel: MainViewModel!
     
-    var hotSalesCollectionViewManger = HotSalesCollectionViewManager()
-    lazy var hotSalesCollectionView = hotSalesCollectionViewManger.collectionView
+    var hotSalesCollectionViewManager = HotSalesCollectionViewManager()
+    lazy var hotSalesCollectionView = hotSalesCollectionViewManager.collectionView
     
     var bestSellerCollectionViewManger = BestSellerCollectionViewManager()
     lazy var bestSellerCollectionView = bestSellerCollectionViewManger.collectionView
@@ -94,22 +60,26 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .mainWhite()
-        
         setupViews()
         setupConstraints()
         
         viewModel.loadHotSalesPhones { phones in
-            self.hotSalesCollectionViewManger.homestore = phones.homeStore
+            self.hotSalesCollectionViewManager.homestore = phones.homeStore
             self.bestSellerCollectionViewManger.bestseller = phones.bestSeller
         }
         
         filterModalViewController.onUpdate = {
             self.tabBarController?.tabBar.isHidden = false
         }
+        
+        bestSellerCollectionViewManger.completion = {
+            self.viewModel.getCharacteristics()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = false
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
@@ -134,12 +104,7 @@ extension MainViewController {
         bestSellerLabel.text = "Best Seller"
         seeMoreBestSellerLabel.text = "see more"
         
-        searchStackView.backgroundColor = .purple
-        
-        categoriesStackView.phonesCategoryButton.addTarget(self, action: #selector(handleCategoryTap), for: .touchUpInside)
-        categoriesStackView.computersCategoryButton.addTarget(self, action: #selector(handleCategoryTap), for: .touchUpInside)
-        categoriesStackView.healthCategoryButton.addTarget(self, action: #selector(handleCategoryTap), for: .touchUpInside)
-        categoriesStackView.booksCategoryButton.addTarget(self, action: #selector(handleCategoryTap), for: .touchUpInside)
+        setTargets()
         
         let qrCodeImage = #imageLiteral(resourceName: "qrcode")
         qrCodeButton.setImage(qrCodeImage.withRenderingMode(.alwaysOriginal), for: .normal)
@@ -190,6 +155,20 @@ extension MainViewController {
         bestSellerTopView.addSubview(seeMoreBestSellerLabel)
         
     }
+    
+    private func setTargets() {
+        [categoriesStackView.phonesCategoryButton,
+         categoriesStackView.computersCategoryButton,
+         categoriesStackView.healthCategoryButton,
+         categoriesStackView.booksCategoryButton].forEach { button in
+            button.addTarget(self, action: #selector(handleCategoryTap), for: .touchUpInside)
+        }
+    }
+    
+    private static func createView() -> UIView {
+        let view = UIView()
+        return view
+    }
 }
 
 // MARK: - IBActions
@@ -202,20 +181,7 @@ extension MainViewController {
     }
     
     @objc private func handleCategoryTap(sender: UIButton) {
-        let image = sender.currentImage
-        let buttonsArray = [categoriesStackView.phonesCategoryButton,
-                            categoriesStackView.computersCategoryButton,
-                            categoriesStackView.healthCategoryButton,
-                            categoriesStackView.booksCategoryButton]
-        
-        for button in buttonsArray {
-            button.tintColor = #colorLiteral(red: 0.7019607843, green: 0.7019607843, blue: 0.7647058824, alpha: 1)
-            button.backgroundColor = .white
-            if button.currentImage == image {
-                button.backgroundColor = .mainOrange()
-                button.tintColor = .white
-            }
-        }
+        viewModel.handleCategoryTap(sender: sender, categoriesStackView: categoriesStackView)
     }
 }
 

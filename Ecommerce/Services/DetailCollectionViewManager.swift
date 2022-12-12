@@ -1,34 +1,35 @@
 //
-//  HotSalesCollectionViewManager.swift
+//  DetailCollectionViewManager.swift
 //  Ecommerce
 //
-//  Created by Вадим Сосновский on 07.12.2022.
+//  Created by Вадим Сосновский on 10.12.2022.
 //
 
 import UIKit
 
-class HotSalesCollectionViewManager: NSObject {
+class DetailCollectionViewManager: NSObject {
     
     lazy var collectionView: UICollectionView = {
         let layout = PagingCollectionViewLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: Constants.hotSalesCellWidth,
-                                 height: Constants.hotSalesCellHeight)
+        layout.itemSize = CGSize(width: Constants.detailCellWidth,
+                                 height: Constants.detailCellHeight)
+        
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .white
         collectionView.decelerationRate = .fast
         collectionView.dataSource = self
-        collectionView.register(HotSalesCollectionViewCell.self,
-                                forCellWithReuseIdentifier: HotSalesCollectionViewCell.reuseId)
+        collectionView.register(DetailCollectionViewCell.self,
+                                forCellWithReuseIdentifier: DetailCollectionViewCell.reuseId)
         collectionView.backgroundColor = .mainWhite()
         collectionView.layer.cornerRadius = 10
         collectionView.clipsToBounds = true
         return collectionView
     }()
     
-    var homestore = [HomeStore]() {
+    var detailsPhoto = [String]() {
         didSet {
             collectionView.reloadData()
         }
@@ -37,15 +38,15 @@ class HotSalesCollectionViewManager: NSObject {
 
 // MARK: - CollectionView Data Source
 
-extension HotSalesCollectionViewManager: UICollectionViewDataSource {
+extension DetailCollectionViewManager: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return homestore.count
+        return detailsPhoto.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HotSalesCollectionViewCell.reuseId, for: indexPath) as! HotSalesCollectionViewCell
-        let item = homestore[indexPath.row]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailCollectionViewCell.reuseId, for: indexPath) as! DetailCollectionViewCell
+        let item = detailsPhoto[indexPath.row]
         cell.configure(withItem: item)
         return cell
     }

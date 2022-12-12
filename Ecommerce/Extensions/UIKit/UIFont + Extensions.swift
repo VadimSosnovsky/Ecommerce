@@ -28,6 +28,10 @@ extension UIFont {
         return UIFont.init(name: "MarkPro-Regular", size: 18)
     }
     
+    static func markProRegular20() -> UIFont? {
+        return UIFont.init(name: "MarkPro-Regular", size: 20)
+    }
+    
     static func markProMedium12() -> UIFont? {
         return UIFont.init(name: "MarkPro-Medium", size: 12)
     }
@@ -40,15 +44,27 @@ extension UIFont {
         return UIFont.init(name: "MarkPro-Medium", size: 18)
     }
     
-    static func markProBold25() -> UIFont? {
-        return UIFont.init(name: "MarkPro-Bold", size: 25)
+    static func markProMedium24() -> UIFont? {
+        return UIFont.init(name: "MarkPro-Medium", size: 24)
+    }
+    
+    static func markProBold13() -> UIFont? {
+        return UIFont.init(name: "MarkPro-Bold", size: 13)
     }
     
     static func markProBold16() -> UIFont? {
         return UIFont.init(name: "MarkPro-Bold", size: 16)
     }
     
-    static func helveticaNeueBold20() -> UIFont? {
-        return UIFont.init(name: "HelveticaNeue-Bold", size: 20)
+    static func markProBold20() -> UIFont? {
+        return UIFont.init(name: "MarkPro-Bold", size: 20)
+    }
+    
+    static func markProBold25() -> UIFont? {
+        return UIFont.init(name: "MarkPro-Bold", size: 25)
+    }
+    
+    static func markProBold35() -> UIFont? {
+        return UIFont.init(name: "MarkPro-Bold", size: 35)
     }
 }
