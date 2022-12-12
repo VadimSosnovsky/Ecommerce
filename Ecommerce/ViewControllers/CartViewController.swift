@@ -11,7 +11,25 @@ class CartViewController: UIViewController {
     
     private let titleLabel = UILabel(font: .markProBold35(), textColor: .mainBlue())
     private let locationLabel = UILabel(font: .markProMedium15(), textColor: .mainBlue())
+    
+    private let totalLabel = UILabel(font: .markProRegular15(), textColor: .white)
+    private let deliveryLabel = UILabel(font: .markProRegular15(), textColor: .white)
+    
+    private let totalValueLabel = UILabel(font: .markProBold15(), textColor: .white)
+    private let deliveryValueLabel = UILabel(font: .markProBold15(), textColor: .white)
+    
     private let mainView = createView()
+    private let separatorBoldView = createView()
+    private let separatorThinView = createView()
+    
+    private let checkoutButton = UIButton(type: .system)
+    
+    var cartTableViewManager = CartTableViewManager()
+    lazy var cartTableView = cartTableViewManager.tableView
+    
+    private var checkStackView = UIStackView()
+    private var checkLeftStackView = UIStackView()
+    private var checkRightStackView = UIStackView()
     
     var viewModel: CartViewModel!
     
@@ -21,9 +39,20 @@ class CartViewController: UIViewController {
         view.backgroundColor = .mainWhite()
         mainView.backgroundColor = .mainBlue()
         
+        cartTableView.backgroundColor = .mainBlue()
+        
+        checkoutButton.layer.cornerRadius = 10
+        
+        separatorBoldView.backgroundColor = .white.withAlphaComponent(0.25)
+        separatorThinView.backgroundColor = .white.withAlphaComponent(0.20)
+        
         setupViews()
         setupConstraints()
         setupNavigationBar()
+        
+        [totalLabel, totalValueLabel, deliveryLabel, deliveryValueLabel].forEach { label in
+            label.textAlignment = .left
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -41,7 +70,7 @@ class CartViewController: UIViewController {
 extension CartViewController {
     @objc private func handleLeftBarButtonTap() {
         print(#function)
-        self.navigationController?.popViewController(animated: true)
+        tabBarController?.selectedIndex = 0
     }
     
     @objc private func handleRightBarButtonTap() {
@@ -56,8 +85,47 @@ extension CartViewController {
         titleLabel.text = "My Cart"
         locationLabel.text = "Add address"
         
+        totalLabel.text = "Total"
+        deliveryLabel.text = "Delivery"
+        
+        totalValueLabel.text = "$6,000 us"
+        deliveryValueLabel.text = "Free"
+        
+        checkoutButton.setTitle("Checkout", for: .normal)
+        checkoutButton.titleLabel?.font = .markProBold20()
+        
+        checkoutButton.backgroundColor = .mainOrange()
+        checkoutButton.tintColor = .white
+        
+        checkLeftStackView = UIStackView(arrangedSubviews: [totalLabel,
+                                                            deliveryLabel],
+                                         axis: .vertical,
+                                         spacing: 12,
+                                         distribution: .fill,
+                                         alignment: .fill)
+        
+        checkRightStackView = UIStackView(arrangedSubviews: [totalValueLabel,
+                                                            deliveryValueLabel],
+                                         axis: .vertical,
+                                         spacing: 12,
+                                         distribution: .fill,
+                                         alignment: .fill)
+        
+        checkStackView = UIStackView(arrangedSubviews: [checkLeftStackView,
+                                                        checkRightStackView],
+                                         axis: .horizontal,
+                                         spacing: 185,
+                                         distribution: .fill,
+                                         alignment: .fill)
+        
         view.addSubview(titleLabel)
         view.addSubview(mainView)
+        
+        mainView.addSubview(cartTableView)
+        mainView.addSubview(separatorBoldView)
+        mainView.addSubview(checkStackView)
+        mainView.addSubview(separatorThinView)
+        mainView.addSubview(checkoutButton)
     }
     
     private func setDetailsData(withCharacteristics characteristics: Characteristics) {
@@ -80,12 +148,22 @@ extension CartViewController {
         leftButton.setImage(rotatedLeftImage, for: .normal)
         leftButton.backgroundColor = .mainBlue()
         leftButton.layer.cornerRadius = 10
-        leftButton.frame = CGRect(x: 20, y: 0, width: 37, height: 37)
         leftButton.addTarget(self, action: #selector(handleLeftBarButtonTap), for: .touchUpInside)
         
         let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 180, height: 44))
     
         leftView.addSubview(leftButton)
+        
+        leftView.snp.makeConstraints { make in
+            make.width.equalTo(180)
+            make.height.equalTo(44)
+        }
+        
+        leftButton.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview().inset(20)
+            make.width.height.equalTo(37)
+        }
         
         let leftBarButtonItem = UIBarButtonItem(customView: leftView)
         navigationItem.leftBarButtonItem = leftBarButtonItem
@@ -97,7 +175,6 @@ extension CartViewController {
         rightButton.setImage(rightImage, for: .normal)
         rightButton.backgroundColor = .mainOrange()
         rightButton.layer.cornerRadius = 10
-        rightButton.frame = CGRect(x: 123, y: 0, width: 37, height: 37)
         rightButton.addTarget(self, action: #selector(handleRightBarButtonTap), for: .touchUpInside)
         
         let rightView = UIView(frame: CGRect(x: 0, y: 0, width: 180, height: 44))
@@ -107,9 +184,21 @@ extension CartViewController {
         rightView.addSubview(locationLabel)
         rightView.addSubview(rightButton)
         
-//        rightButton.snp.makeConstraints { make in
-//            make.trailing.equalTo(rightView.snp.trailing)
-//        }
+        rightView.snp.makeConstraints { make in
+            make.width.equalTo(180)
+            make.height.equalTo(44)
+        }
+        
+        rightButton.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().inset(20)
+            make.width.height.equalTo(37)
+        }
+        
+        locationLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalTo(rightButton.snp.leading).offset(-9)
+        }
         
         let rightBarButtonItem = UIBarButtonItem(customView: rightView)
         
@@ -121,7 +210,7 @@ extension CartViewController {
 extension CartViewController {
     private func setupConstraints() {
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(50)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(45)
             make.leading.equalToSuperview().inset(42)
         }
         
@@ -129,6 +218,35 @@ extension CartViewController {
             make.top.equalTo(titleLabel.snp.bottom).offset(48)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
+        }
+        
+        cartTableView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(81)
+            make.leading.trailing.equalToSuperview().inset(33)
+            make.height.equalTo(356)
+        }
+        
+        separatorBoldView.snp.makeConstraints { make in
+            make.top.equalTo(cartTableView.snp.bottom).offset(38)
+            make.leading.trailing.equalToSuperview().inset(4)
+            make.height.equalTo(2)
+        }
+        
+        checkStackView.snp.makeConstraints { make in
+            make.top.equalTo(separatorBoldView.snp.bottom).offset(15)
+            make.leading.equalToSuperview().inset(55)
+        }
+        
+        separatorThinView.snp.makeConstraints { make in
+            make.top.equalTo(checkStackView.snp.bottom).offset(26)
+            make.leading.trailing.equalToSuperview().inset(4)
+            make.height.equalTo(1)
+        }
+        
+        checkoutButton.snp.makeConstraints { make in
+            make.top.equalTo(separatorThinView.snp.bottom).offset(27)
+            make.leading.trailing.equalToSuperview().inset(44)
+            make.height.equalTo(54)
         }
     }
 }

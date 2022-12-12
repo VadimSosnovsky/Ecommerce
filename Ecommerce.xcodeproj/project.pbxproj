@@ -44,6 +44,7 @@
 		897F54F629409D4200E38F02 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897F54F529409D4200E38F02 /* Environment.swift */; };
 		897F54FE2940C07600E38F02 /* BestSellerCollectionViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897F54FD2940C07600E38F02 /* BestSellerCollectionViewManager.swift */; };
 		897F55002940C17A00E38F02 /* BestSellerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897F54FF2940C17A00E38F02 /* BestSellerCollectionViewCell.swift */; };
+		898565B529471DD200523AA0 /* CartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898565B429471DD200523AA0 /* CartTableViewCell.swift */; };
 		899E2118293FB2850049FD5A /* MarkPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 899E2114293FB2850049FD5A /* MarkPro-Regular.ttf */; };
 		899E2119293FB2850049FD5A /* MarkPro-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 899E2115293FB2850049FD5A /* MarkPro-Medium.ttf */; };
 		899E211A293FB2850049FD5A /* MarkPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 899E2116293FB2850049FD5A /* MarkPro-Bold.ttf */; };
@@ -109,6 +110,7 @@
 		897F54F529409D4200E38F02 /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		897F54FD2940C07600E38F02 /* BestSellerCollectionViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestSellerCollectionViewManager.swift; sourceTree = "<group>"; };
 		897F54FF2940C17A00E38F02 /* BestSellerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestSellerCollectionViewCell.swift; sourceTree = "<group>"; };
+		898565B429471DD200523AA0 /* CartTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartTableViewCell.swift; sourceTree = "<group>"; };
 		899E2114293FB2850049FD5A /* MarkPro-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MarkPro-Regular.ttf"; sourceTree = "<group>"; };
 		899E2115293FB2850049FD5A /* MarkPro-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MarkPro-Medium.ttf"; sourceTree = "<group>"; };
 		899E2116293FB2850049FD5A /* MarkPro-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MarkPro-Bold.ttf"; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 		896947E32940933A0015514C /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				898565B429471DD200523AA0 /* CartTableViewCell.swift */,
 				89F716C129449969005014E7 /* DetailCollectionViewCell.swift */,
 				896947E42940934F0015514C /* HotSalesCollectionViewCell.swift */,
 				897F54FF2940C17A00E38F02 /* BestSellerCollectionViewCell.swift */,
@@ -531,6 +534,7 @@
 				897ED29B29464117006B006B /* CartTableViewManager.swift in Sources */,
 				89A90AC0293FD46C0096366C /* Categories.swift in Sources */,
 				89F716BE294491FA005014E7 /* UIImage + Extensions.swift in Sources */,
+				898565B529471DD200523AA0 /* CartTableViewCell.swift in Sources */,
 				8950A42B2941F11000FF632C /* ProfileViewModel.swift in Sources */,
 				897F55002940C17A00E38F02 /* BestSellerCollectionViewCell.swift in Sources */,
 				89B3C0EA29425E1000D0D0A6 /* FilterModalViewController.swift in Sources */,

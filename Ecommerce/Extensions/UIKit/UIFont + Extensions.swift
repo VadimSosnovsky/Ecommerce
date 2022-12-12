@@ -44,12 +44,20 @@ extension UIFont {
         return UIFont.init(name: "MarkPro-Medium", size: 18)
     }
     
+    static func markProMedium20() -> UIFont? {
+        return UIFont.init(name: "MarkPro-Medium", size: 20)
+    }
+    
     static func markProMedium24() -> UIFont? {
         return UIFont.init(name: "MarkPro-Medium", size: 24)
     }
     
     static func markProBold13() -> UIFont? {
         return UIFont.init(name: "MarkPro-Bold", size: 13)
+    }
+    
+    static func markProBold15() -> UIFont? {
+        return UIFont.init(name: "MarkPro-Bold", size: 15)
     }
     
     static func markProBold16() -> UIFont? {

@@ -63,8 +63,8 @@ class DetailViewController: UIViewController {
     var viewModel: DetailViewModel!
     private var characteristics: Characteristics?
     
-    var detailsCollectionViewManger = DetailCollectionViewManager()
-    lazy var detailsCollectionView = detailsCollectionViewManger.collectionView
+    var detailsCollectionViewManager = DetailCollectionViewManager()
+    lazy var detailsCollectionView = detailsCollectionViewManager.collectionView
     
     
     override func viewDidLoad() {
@@ -74,7 +74,7 @@ class DetailViewController: UIViewController {
         characteristics = viewModel.characteristics
         
         if let images = characteristics?.images {
-            detailsCollectionViewManger.detailsPhoto = images
+            detailsCollectionViewManager.detailsPhoto = images
         }
         
         if let characteristics = characteristics {
