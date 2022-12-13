@@ -63,9 +63,10 @@ class DetailViewController: UIViewController {
     var viewModel: DetailViewModel!
     private var characteristics: Characteristics?
     
+    var productsToBuy: Int = 0
+    
     var detailsCollectionViewManager = DetailCollectionViewManager()
     lazy var detailsCollectionView = detailsCollectionViewManager.collectionView
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,6 +101,10 @@ class DetailViewController: UIViewController {
         ratingView.settings.fillMode = .half
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+
+    }
+    
     override func viewDidLayoutSubviews() {
         firstColorButton.layer.cornerRadius = firstColorButton.frame.width / 2
         secondColorButton.layer.cornerRadius = secondColorButton.frame.width / 2
@@ -112,13 +117,18 @@ class DetailViewController: UIViewController {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.viewDidDisappear()
+    }
 }
 
 // MARK: - IBActions
 extension DetailViewController {
     @objc private func handleLeftBarButtonTap() {
         print(#function)
-        self.navigationController?.popViewController(animated: true)
+        viewModel.backButtonTapped()
     }
     
     @objc private func handleRightBarButtonTap() {
@@ -139,14 +149,15 @@ extension DetailViewController {
                                 featuresButton: featuresButton,
                                 featuresView: featuresLineView)
     }
+    
+    @objc private func handleAddToCartTap() {
+        productsToBuy += 1
+    }
 }
 
 // MARK: - Setup Views
 extension DetailViewController {
     private func setupViews() {
-        
-        let likeImage = #imageLiteral(resourceName: "likeImage").withRenderingMode(.alwaysOriginal)
-        likeButton.setImage(likeImage, for: .normal)
         
         equipmentLabel.text = "Select color and capacity"
         
@@ -165,6 +176,7 @@ extension DetailViewController {
         shopButton.addTarget(self, action: #selector(menuHandleTap), for: .touchUpInside)
         detailsButton.addTarget(self, action: #selector(menuHandleTap), for: .touchUpInside)
         featuresButton.addTarget(self, action: #selector(menuHandleTap), for: .touchUpInside)
+        addtoCartButton.addTarget(self, action: #selector(handleAddToCartTap), for: .touchUpInside)
         
         addtoCartButton.setTitle(priceString, for: .normal)
         addtoCartButton.titleLabel?.font = .markProBold20()
@@ -286,6 +298,15 @@ extension DetailViewController {
            let secondColor = characteristics.color.last {
             firstColorButton.backgroundColor = UIColor.hexStringToUIColor(hex: firstColor)
             secondColorButton.backgroundColor = UIColor.hexStringToUIColor(hex: secondColor)
+        }
+        
+        var likeImage = UIImage()
+        if characteristics.isFavorites {
+            likeImage = #imageLiteral(resourceName: "feelLikeImage").withRenderingMode(.alwaysOriginal)
+            likeButton.setImage(likeImage, for: .normal)
+        } else {
+            likeImage = #imageLiteral(resourceName: "favoriteTab").withRenderingMode(.alwaysOriginal)
+            likeButton.setImage(likeImage, for: .normal)
         }
     }
     

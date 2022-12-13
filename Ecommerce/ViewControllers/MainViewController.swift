@@ -49,6 +49,7 @@ class MainViewController: UIViewController {
     }()
     
     var viewModel: MainViewModel!
+    var badgeCount = 0
     
     var hotSalesCollectionViewManager = HotSalesCollectionViewManager()
     lazy var hotSalesCollectionView = hotSalesCollectionViewManager.collectionView
@@ -56,8 +57,13 @@ class MainViewController: UIViewController {
     var bestSellerCollectionViewManger = BestSellerCollectionViewManager()
     lazy var bestSellerCollectionView = bestSellerCollectionViewManger.collectionView
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let cartVC = (viewModel.coordinator?.parentCoordinator?.childCoordinators[1] as? CartCoordinator)?.cartViewController
+        
+        cartVC?.handleUpdatedDataDelegate = self
         
         view.backgroundColor = .mainWhite()
         setupViews()
@@ -68,6 +74,11 @@ class MainViewController: UIViewController {
             self.bestSellerCollectionViewManger.bestseller = phones.bestSeller
         }
         
+        viewModel.loadCartPhones { cart in
+            self.badgeCount = cart.basket.count
+            self.tabBarController?.tabBar.items![1].badgeValue = "\(cart.basket.count)"
+        }
+        
         filterModalViewController.onUpdate = {
             self.tabBarController?.tabBar.isHidden = false
         }
@@ -75,7 +86,14 @@ class MainViewController: UIViewController {
         bestSellerCollectionViewManger.completion = {
             self.viewModel.getCharacteristics()
         }
+        
+        tabBarController?.tabBar.items![1].badgeColor = .mainOrange()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -324,6 +342,21 @@ extension MainViewController {
             make.top.equalTo(bestSellerTopView.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
+        }
+    }
+}
+
+protocol DataUpdateProtocol {
+    func onDataUpdate(badgeCount: Int)
+}
+
+extension MainViewController: DataUpdateProtocol {
+    func onDataUpdate(badgeCount: Int) {
+        self.badgeCount = badgeCount
+        if badgeCount > 0 {
+            self.tabBarController?.tabBar.items![1].badgeValue = "\(badgeCount)"
+        } else {
+            self.tabBarController?.tabBar.items![1].badgeValue = nil
         }
     }
 }

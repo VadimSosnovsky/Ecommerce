@@ -13,11 +13,12 @@ class CartTableViewManager: NSObject {
         let tableView = UITableView()
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.showsVerticalScrollIndicator = false
         tableView.register(CartTableViewCell.self, forCellReuseIdentifier: CartTableViewCell.reuseId)
         return tableView
     }()
     
-    var detailsPhoto = [String]() {
+    var basket = [Basket]() {
         didSet {
             tableView.reloadData()
         }
@@ -29,7 +30,7 @@ class CartTableViewManager: NSObject {
 extension CartTableViewManager: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return basket.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -37,7 +38,7 @@ extension CartTableViewManager: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 1 || section == 2 {
+        if section != 0 {
             return "Title"
         }
         return ""
@@ -49,7 +50,9 @@ extension CartTableViewManager: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CartTableViewCell.reuseId, for: indexPath) as! CartTableViewCell
-        cell.configure()
+        let item = basket[indexPath.section]
+        cell.currentItem = item
+        cell.configure(withItem: item)
         return cell
     }
 }

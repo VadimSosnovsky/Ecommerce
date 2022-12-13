@@ -18,8 +18,10 @@ final class CartCoordinator: Coordinator {
         self.navigationController = navigationController
     }
     
+    let cartViewController = CartViewController()
+    
     func start() {
-        let cartViewController = CartViewController()
+        let cartViewController = cartViewController
         let cartViewModel = CartViewModel()
         cartViewModel.coordinator = self
         cartViewController.viewModel = cartViewModel

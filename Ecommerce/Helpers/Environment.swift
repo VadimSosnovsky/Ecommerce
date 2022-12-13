@@ -11,6 +11,7 @@ public enum Environment {
     enum Keys {
         static let searchPhonesUrl = "SEARCH_PHONES_URL"
         static let searchDetailsUrl = "SEARCH_DETAILS_URL"
+        static let searchCartUrl = "SEARCH_CART_URL"
     }
     
     private static let infoDictionary: [String: Any] = {
@@ -32,5 +33,12 @@ public enum Environment {
             fatalError("Base URL not set in plist")
         }
         return searchDetailsUrlString
+    }()
+    
+    static let searchCartURL: String = {
+        guard let searchSearchUrlString = Environment.infoDictionary[Keys.searchCartUrl] as? String else {
+            fatalError("Base URL not set in plist")
+        }
+        return searchSearchUrlString
     }()
 }

@@ -28,6 +28,10 @@ class BestSellerCollectionViewCell: UICollectionViewCell {
         backgroundColor = .white
         layer.cornerRadius = 10
         layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        
+        let image = #imageLiteral(resourceName: "like")
+        favoriteButton.setImage(image.withRenderingMode(.alwaysOriginal), for: .normal)
+        favoriteButton.tintColor = .mainBlue()
     }
     
     override func layoutSubviews() {
@@ -38,10 +42,6 @@ class BestSellerCollectionViewCell: UICollectionViewCell {
         
         favoriteButton.backgroundColor = .white
         favoriteButton.layer.cornerRadius = favoriteButton.frame.width / 2
-        
-        let image = #imageLiteral(resourceName: "like")
-        favoriteButton.setImage(image.withRenderingMode(.alwaysOriginal), for: .normal)
-        favoriteButton.tintColor = .mainBlue()
     }
     
     override func prepareForReuse() {
@@ -70,9 +70,26 @@ extension BestSellerCollectionViewCell {
     }
 }
 
+// MARK: - IBActions
+extension BestSellerCollectionViewCell {
+    @objc private func handleFavoriteTap() {
+        print(#function)
+        var currentImage = #imageLiteral(resourceName: "like").withRenderingMode(.alwaysOriginal)
+        if favoriteButton.currentImage == currentImage {
+            currentImage = #imageLiteral(resourceName: "like.fill")
+            favoriteButton.setImage(currentImage.withRenderingMode(.alwaysOriginal), for: .normal)
+        } else {
+            favoriteButton.setImage(currentImage.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
+    }
+}
+
 // MARK: - Setup Views
 extension BestSellerCollectionViewCell {
     private func setupViews() {
+        
+        favoriteButton.addTarget(self, action: #selector(handleFavoriteTap), for: .touchUpInside)
+        
         addSubview(phoneImageView)
         addSubview(favoriteButton)
         addSubview(pricesView)

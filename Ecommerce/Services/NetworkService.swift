@@ -9,6 +9,7 @@ import Foundation
 import Alamofire
 
 protocol NetworkServiceProtocol {
+    func fetchCart(completion: @escaping (Cart?) -> Void)
     func fetchPhones(completion: @escaping (Phones?) -> Void)
     func fetchCharasteristics(completion: @escaping (Characteristics?) -> Void)
     func loadImages(from url: URL, completion: @escaping (UIImage) -> Void)
@@ -53,7 +54,23 @@ final class NetworkService: NetworkServiceProtocol {
             
             guard let data = dataResponse.data else { return }
             let resultData = self.decodeJSON(Characteristics.self, data: data)
-            print(resultData)
+            completion(resultData)
+        }
+    }
+    
+    func fetchCart(completion: @escaping (Cart?) -> Void) {
+        let url = Environment.searchCartURL
+        AF.request(url,
+                   method: .get,
+                   parameters: nil,
+                   encoding: URLEncoding.default,
+                   headers: nil).responseData { (dataResponse) in
+            if let error = dataResponse.error {
+                print("Error: \(error)")
+            }
+            
+            guard let data = dataResponse.data else { return }
+            let resultData = self.decodeJSON(Cart.self, data: data)
             completion(resultData)
         }
     }

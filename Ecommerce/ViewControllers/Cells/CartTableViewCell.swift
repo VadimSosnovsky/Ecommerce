@@ -15,16 +15,19 @@ class CartTableViewCell: UITableViewCell {
     private let phoneImageView = UIImageView()
     private let trashImageView = UIImageView()
     private let phoneNameLabel = UILabel(font: .markProMedium20(), textColor: .white)
-    private let priceLabel = UILabel(font: .markProMedium20(), textColor: .mainOrange())
+    let priceLabel = UILabel(font: .markProMedium20(), textColor: .mainOrange())
     
-    private let countLabel = UILabel(font: .markProMedium20(), textColor: .white)
+    let countLabel = UILabel(font: .markProMedium20(), textColor: .white)
     private let increaseButton = UIButton(type: .system)
     private let decreaseButton = UIButton(type: .system)
     
-    private var counter: Int = 0
+    private var counter: Int = 1
     
     private var stepperStackView = UIStackView()
     
+    var currentItem: Basket?
+    var closure: () -> () = { }
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
@@ -64,11 +67,11 @@ class CartTableViewCell: UITableViewCell {
 
 // MARK: - Configure Cell
 extension CartTableViewCell {
-    func configure() {
-        let url = URL(string: "https://avatars.mds.yandex.net/get-mpic/5235334/img_id5575010630545284324.png/orig")
+    func configure(withItem item: Basket) {
+        let url = URL(string: item.images)
         phoneImageView.sd_setImage(with: url)
-        phoneNameLabel.text = "Galaxy Note 20 Ultra"
-        priceLabel.text = "$3000.00"
+        phoneNameLabel.text = item.title
+        priceLabel.text = "\(item.price).00$"
     }
 }
 
@@ -77,12 +80,16 @@ extension CartTableViewCell {
     @objc private func handleIncreaseTap() {
         counter += 1
         countLabel.text = "\(counter)"
+        priceLabel.text = "\((currentItem?.price ?? 0) * counter).00$"
+        closure()
     }
     
     @objc private func handleDecreaseTap() {
         if counter > 0 {
             counter -= 1
             countLabel.text = "\(counter)"
+            priceLabel.text = "\((currentItem?.price ?? 0) * counter).00$"
+            closure()
         }
     }
 }
@@ -91,7 +98,7 @@ extension CartTableViewCell {
 extension CartTableViewCell {
     private func setupViews() {
         
-        countLabel.text = "0"
+        countLabel.text = "1"
         
         trashImageView.image =  #imageLiteral(resourceName: "trash").withRenderingMode(.alwaysOriginal)
         

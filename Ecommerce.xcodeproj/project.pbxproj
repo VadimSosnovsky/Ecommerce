@@ -62,6 +62,8 @@
 		89A90AC0293FD46C0096366C /* Categories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A90ABF293FD46C0096366C /* Categories.swift */; };
 		89B35C1E29407D64000C061C /* SearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B35C1D29407D64000C061C /* SearchTextField.swift */; };
 		89B3C0EA29425E1000D0D0A6 /* FilterModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B3C0E929425E1000D0D0A6 /* FilterModalViewController.swift */; };
+		89F625C829485FE40055AAE6 /* Cart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F625C729485FE40055AAE6 /* Cart.swift */; };
+		89F625CA29485FEE0055AAE6 /* Basket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F625C929485FEE0055AAE6 /* Basket.swift */; };
 		89F716BE294491FA005014E7 /* UIImage + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F716BD294491FA005014E7 /* UIImage + Extensions.swift */; };
 		89F716C0294498F1005014E7 /* DetailCollectionViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F716BF294498F1005014E7 /* DetailCollectionViewManager.swift */; };
 		89F716C229449969005014E7 /* DetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F716C129449969005014E7 /* DetailCollectionViewCell.swift */; };
@@ -128,6 +130,8 @@
 		89A90ABF293FD46C0096366C /* Categories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Categories.swift; sourceTree = "<group>"; };
 		89B35C1D29407D64000C061C /* SearchTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextField.swift; sourceTree = "<group>"; };
 		89B3C0E929425E1000D0D0A6 /* FilterModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterModalViewController.swift; sourceTree = "<group>"; };
+		89F625C729485FE40055AAE6 /* Cart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cart.swift; sourceTree = "<group>"; };
+		89F625C929485FEE0055AAE6 /* Basket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Basket.swift; sourceTree = "<group>"; };
 		89F716BD294491FA005014E7 /* UIImage + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage + Extensions.swift"; sourceTree = "<group>"; };
 		89F716BF294498F1005014E7 /* DetailCollectionViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCollectionViewManager.swift; sourceTree = "<group>"; };
 		89F716C129449969005014E7 /* DetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -286,6 +290,7 @@
 			children = (
 				89A08128294372D700BD04B7 /* MainVC Models */,
 				89A081292943730100BD04B7 /* DetailVC Models */,
+				89F625C629485F340055AAE6 /* CartVC Models */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -372,6 +377,15 @@
 				893E99AA2945E27C004D9FB2 /* CustomUISegmentedControl.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		89F625C629485F340055AAE6 /* CartVC Models */ = {
+			isa = PBXGroup;
+			children = (
+				89F625C729485FE40055AAE6 /* Cart.swift */,
+				89F625C929485FEE0055AAE6 /* Basket.swift */,
+			);
+			path = "CartVC Models";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -495,6 +509,7 @@
 				8979B47A293F2F9700D93471 /* AppCoordinator.swift in Sources */,
 				8979B47E293F300800D93471 /* MainCoordinator.swift in Sources */,
 				89A0812729436C5800BD04B7 /* DetailViewModel.swift in Sources */,
+				89F625C829485FE40055AAE6 /* Cart.swift in Sources */,
 				8979B45B293F2D6100D93471 /* AppDelegate.swift in Sources */,
 				89A0812B2943734600BD04B7 /* Characteristics.swift in Sources */,
 				89A90ABE293FCFA90096366C /* CategoriesStackView.swift in Sources */,
@@ -536,6 +551,7 @@
 				89F716BE294491FA005014E7 /* UIImage + Extensions.swift in Sources */,
 				898565B529471DD200523AA0 /* CartTableViewCell.swift in Sources */,
 				8950A42B2941F11000FF632C /* ProfileViewModel.swift in Sources */,
+				89F625CA29485FEE0055AAE6 /* Basket.swift in Sources */,
 				897F55002940C17A00E38F02 /* BestSellerCollectionViewCell.swift in Sources */,
 				89B3C0EA29425E1000D0D0A6 /* FilterModalViewController.swift in Sources */,
 				8950A41D2941DD8800FF632C /* CartViewController.swift in Sources */,

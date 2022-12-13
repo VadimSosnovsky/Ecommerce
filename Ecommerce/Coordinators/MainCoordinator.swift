@@ -13,6 +13,7 @@ final class MainCoordinator: Coordinator {
     weak var parentCoordinator: EcommerceTabBarCoordinator?
     
     private let navigationController: UINavigationController
+    private let detailViewController = DetailViewController()
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController

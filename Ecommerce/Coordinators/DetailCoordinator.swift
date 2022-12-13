@@ -28,4 +28,12 @@ final class DetailCoordinator: Coordinator {
         navigationController.pushViewController(detailViewController, animated: true)
         navigationController.isNavigationBarHidden = false
     }
+    
+    func didFinish() {
+        parentCoordinator?.childDidFinish(self)
+    }
+    
+    func didFinishDetailScene() {
+        navigationController.popViewController(animated: true)
+    }
 }

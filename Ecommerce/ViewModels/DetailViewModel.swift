@@ -62,4 +62,13 @@ final class DetailViewModel {
             }
         }
     }
+    
+    func backButtonTapped() {
+        coordinator?.didFinishDetailScene()
+    }
+    
+    
+    func viewDidDisappear() {
+        coordinator?.didFinish()
+    }
 }

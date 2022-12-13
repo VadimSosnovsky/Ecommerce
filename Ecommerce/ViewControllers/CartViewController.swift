@@ -32,6 +32,30 @@ class CartViewController: UIViewController {
     private var checkRightStackView = UIStackView()
     
     var viewModel: CartViewModel!
+    var totalPrice = 0
+    var badgeCount = 2
+    
+    var handleUpdatedDataDelegate: DataUpdateProtocol?
+    
+    override func viewWillLayoutSubviews() {
+        
+        let cells = cartTableView.numberOfSections
+        
+        for currentCell in 0...cells {
+            var cell = cartTableView.cellForRow(at: IndexPath(row: 0, section: currentCell)) as? CartTableViewCell
+
+            cell?.closure = {
+                var total = 0
+                self.badgeCount = 0
+                for item in 0...cells {
+                    cell = self.cartTableView.cellForRow(at: IndexPath(row: 0, section: item)) as? CartTableViewCell
+                    total += Int(cell?.priceLabel.text?.dropLast(4) ?? "") ?? 0
+                    self.badgeCount += Int(cell?.countLabel.text ?? "") ?? 0
+                }
+                self.totalValueLabel.text = "$\(total) us"
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,18 +70,33 @@ class CartViewController: UIViewController {
         separatorBoldView.backgroundColor = .white.withAlphaComponent(0.25)
         separatorThinView.backgroundColor = .white.withAlphaComponent(0.20)
         
-        setupViews()
-        setupConstraints()
-        setupNavigationBar()
-        
         [totalLabel, totalValueLabel, deliveryLabel, deliveryValueLabel].forEach { label in
             label.textAlignment = .left
         }
+        
+        viewModel.loadCartPhones { cart in
+            self.cartTableViewManager.basket = cart.basket
+            
+            self.cartTableViewManager.basket.forEach { basket in
+                self.totalPrice += basket.price
+            }
+            self.totalValueLabel.text = "$\(self.totalPrice) us"
+            self.deliveryValueLabel.text = cart.delivery
+        }
+        
+        setupViews()
+        setupConstraints()
+        setupNavigationBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        handleUpdatedDataDelegate?.onDataUpdate(badgeCount: badgeCount)
     }
     
     override func viewDidLayoutSubviews() {
@@ -87,9 +126,6 @@ extension CartViewController {
         
         totalLabel.text = "Total"
         deliveryLabel.text = "Delivery"
-        
-        totalValueLabel.text = "$6,000 us"
-        deliveryValueLabel.text = "Free"
         
         checkoutButton.setTitle("Checkout", for: .normal)
         checkoutButton.titleLabel?.font = .markProBold20()
@@ -138,7 +174,8 @@ extension CartViewController {
     }
     
     private func setupNavigationBar() {
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.mainBlue(), .font: UIFont.markProMedium18() ?? UIFont.systemFont(ofSize: 18)]
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.mainBlue(),
+                                                                   .font: UIFont.markProMedium18() ?? UIFont.systemFont(ofSize: 18)]
 
         // left Bar Button Item
         
