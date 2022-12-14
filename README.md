@@ -1,9 +1,8 @@
 Сосновский Вадим, vadim73rus1234567@mail.ru
 
-![ezgif com-gif-maker](https://user-images.githubusercontent.com/71663358/207669198-6a041d4f-c480-48ec-9e33-a3da4436d69a.gif)
-
-
 Используемый стек технологий!
+
+![ezgif com-gif-maker](https://user-images.githubusercontent.com/71663358/207674426-af8c7908-e508-4708-bc4e-5e85b272a4ce.gif)
 
 Language: Swift;
 Architecture: MVVM-C;
