@@ -30,10 +30,10 @@ final class MainViewModel {
     }
     
     func getCharacteristics() {
-        self.networService.fetchCharasteristics { characteristics in
-            self.characteristics = characteristics
+        self.networService.fetchCharasteristics { [weak self] characteristics in
+            self?.characteristics = characteristics
             guard let characteristics = characteristics else { return }
-            self.coordinator?.startDetailScene(withCharacteristics: characteristics)
+            self?.coordinator?.startDetailScene(withCharacteristics: characteristics)
         }
     }
     
@@ -45,16 +45,12 @@ final class MainViewModel {
                             categoriesStackView.booksCategoryButton]
         
         for button in buttonsArray {
-            button.tintColor = #colorLiteral(red: 0.7019607843, green: 0.7019607843, blue: 0.7647058824, alpha: 1)
+            button.tintColor = .lightGrey()
             button.backgroundColor = .white
             if button.currentImage == image {
                 button.backgroundColor = .mainOrange()
                 button.tintColor = .white
             }
         }
-    }
-    
-    func handleFilterTap() {
-            
     }
 }

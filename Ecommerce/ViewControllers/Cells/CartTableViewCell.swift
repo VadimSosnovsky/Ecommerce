@@ -10,7 +10,7 @@ import SDWebImage
 
 class CartTableViewCell: UITableViewCell {
     
-    static let reuseId = "CartTableViewCell"
+    static let reuseId = Constants.cartTableViewCellReuseId
     
     private let phoneImageView = UIImageView()
     private let trashImageView = UIImageView()
@@ -36,8 +36,7 @@ class CartTableViewCell: UITableViewCell {
         setupConstraints()
         
         backgroundColor = .mainBlue()
-        
-        stepperStackView.backgroundColor = #colorLiteral(red: 0.2081786394, green: 0.2133549154, blue: 0.332486093, alpha: 1)
+        stepperStackView.backgroundColor = .darkGrey()
     }
     
     override func layoutSubviews() {
@@ -58,6 +57,7 @@ class CartTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        phoneImageView.image = nil
     }
     
     required init?(coder: NSCoder) {
@@ -80,7 +80,8 @@ extension CartTableViewCell {
     @objc private func handleIncreaseTap() {
         counter += 1
         countLabel.text = "\(counter)"
-        priceLabel.text = "\((currentItem?.price ?? 0) * counter).00$"
+        guard let item = currentItem?.price else { return }
+        priceLabel.text = "\(item * counter).00$"
         closure()
     }
     
@@ -88,7 +89,8 @@ extension CartTableViewCell {
         if counter > 0 {
             counter -= 1
             countLabel.text = "\(counter)"
-            priceLabel.text = "\((currentItem?.price ?? 0) * counter).00$"
+            guard let item = currentItem?.price else { return }
+            priceLabel.text = "\(item * counter).00$"
             closure()
         }
     }

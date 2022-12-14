@@ -10,7 +10,7 @@ import SDWebImage
 
 class HotSalesCollectionViewCell: UICollectionViewCell {
     
-    static let reuseId = "HotSalesCollectionViewCell"
+    static let reuseId = Constants.hotSalesCollectionViewCell
     
     private let phoneImageView = UIImageView()
     private let isNewImageView = UIImageView()
@@ -30,10 +30,9 @@ class HotSalesCollectionViewCell: UICollectionViewCell {
         layer.cornerRadius = 10
         clipsToBounds = true
         
-        
         buyButton.backgroundColor = .white
         buyButton.layer.cornerRadius = 5
-        buyButton.setTitle("Buy now!", for: .normal)
+        buyButton.setTitle(Constants.buyButtonTitle, for: .normal)
         buyButton.tintColor = .mainBlue()
         
         phoneImageView.clipsToBounds = true
@@ -44,6 +43,7 @@ class HotSalesCollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        phoneImageView.image = nil
     }
     
     required init?(coder: NSCoder) {

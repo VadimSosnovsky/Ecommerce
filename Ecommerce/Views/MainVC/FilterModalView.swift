@@ -19,13 +19,13 @@ class FilterModalView: UIView {
     private let filterLabel = UILabel(font: .markProMedium18(), textColor: .mainBlue())
     
     private let brandLabel = UILabel(font: .markProMedium18(), textColor: .mainBlue())
-    private let phoneNameTextField = FilterTextField(placeholder: "Samsung", rightImageName: #imageLiteral(resourceName: "bigArrow"))
+    private let phoneNameTextField = FilterTextField(placeholder: Constants.phoneNameTextFieldPlaceholder, rightImageName: #imageLiteral(resourceName: "bigArrow"))
     
     private let priceLabel = UILabel(font: .markProMedium18(), textColor: .mainBlue())
-    private let priceTextField = FilterTextField(placeholder: "$300-$500", rightImageName: #imageLiteral(resourceName: "bigArrow"))
+    private let priceTextField = FilterTextField(placeholder: Constants.priceTextFieldPlacholder, rightImageName: #imageLiteral(resourceName: "bigArrow"))
     
     private let sizeLabel = UILabel(font: .markProMedium18(), textColor: .mainBlue())
-    private let sizeTextField = FilterTextField(placeholder: "$4.5 to 5.5 inches", rightImageName: #imageLiteral(resourceName: "bigArrow"))
+    private let sizeTextField = FilterTextField(placeholder: Constants.sizeTextFieldPlaceholder, rightImageName: #imageLiteral(resourceName: "bigArrow"))
     
     private let emptyView = UIView()
     
@@ -50,9 +50,9 @@ class FilterModalView: UIView {
         cancelButton.backgroundColor = .mainBlue()
         doneButton.backgroundColor = .mainOrange()
         
-        phoneNameTextField.isUserInteractionEnabled = false
-        priceTextField.isUserInteractionEnabled = false
-        sizeTextField.isUserInteractionEnabled = false
+        [phoneNameTextField, priceTextField, sizeTextField].forEach { tf in
+            tf.isUserInteractionEnabled = false
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -60,11 +60,10 @@ class FilterModalView: UIView {
     }
     
     private func setupViews() {
-        
-        filterLabel.text = "Filter Options"
-        brandLabel.text = "Brand"
-        priceLabel.text = "Price"
-        sizeLabel.text = "Size"
+        filterLabel.text = Constants.filterLabel
+        brandLabel.text = Constants.brandLabel
+        priceLabel.text = Constants.priceLabel
+        sizeLabel.text = Constants.sizeLabel
         
         let cancelImage = #imageLiteral(resourceName: "cross").withRenderingMode(.alwaysOriginal)
         cancelButton.setImage(cancelImage, for: .normal)

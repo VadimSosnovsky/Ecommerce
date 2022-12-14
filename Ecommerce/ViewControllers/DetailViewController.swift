@@ -6,70 +6,44 @@
 //
 
 import UIKit
-import Cosmos
 
 class DetailViewController: UIViewController {
     
-    private let detailsView = createView()
-    private let detailsTopView = createView()
-    private let shopLineView = createView()
-    private let detailsLineView = createView()
-    private let featuresLineView = createView()
-    private let equipmentView = createView()
+    private let detailsView = UIView.createView()
+    private let detailsTopView = DetailsTopView()
+    private let equipmentView = UIView.createView()
     
-    private let ratingView = CosmosView()
-    private let phoneNameLabel = UILabel(font: .markProMedium24(), textColor: .mainBlue())
-    
-    private var priceString = "Add to Cart"
-    
-    private let likeButton = UIButton(type: .system)
-    private let firstColorButton = UIButton(type: .system)
-    private let secondColorButton = UIButton(type: .system)
+    private var priceString = Constants.priceString
+
     private let addtoCartButton = UIButton(type: .system)
     
-    var capacitySegmentedControl = HBSegmentedControl()
-    
     private let equipmentLabel = UILabel(font: .markProMedium18(), textColor: .mainBlue())
-    
-    private let shopButton = UIButton(type: .system)
-    private let detailsButton = UIButton(type: .system)
-    private let featuresButton = UIButton(type: .system)
-    
-    private let cpuLabel = UILabel(font: .markProRegular11(), textColor: #colorLiteral(red: 0.7176470588, green: 0.7176470588, blue: 0.7176470588, alpha: 1))
-    private let cameraLabel = UILabel(font: .markProRegular11(), textColor: #colorLiteral(red: 0.7176470588, green: 0.7176470588, blue: 0.7176470588, alpha: 1))
-    private let ssdLabel = UILabel(font: .markProRegular11(), textColor: #colorLiteral(red: 0.7176470588, green: 0.7176470588, blue: 0.7176470588, alpha: 1))
-    private let sdLabel = UILabel(font: .markProRegular11(), textColor: #colorLiteral(red: 0.7176470588, green: 0.7176470588, blue: 0.7176470588, alpha: 1))
-    
-    private let cpuImageView = UIImageView(image: #imageLiteral(resourceName: "cpu").withRenderingMode(.alwaysOriginal))
-    private let cameraImageView = UIImageView(image: #imageLiteral(resourceName: "camera").withRenderingMode(.alwaysOriginal))
-    private let ssdImageView = UIImageView(image: #imageLiteral(resourceName: "ssd").withRenderingMode(.alwaysOriginal))
-    private let sdImageView = UIImageView(image: #imageLiteral(resourceName: "sd").withRenderingMode(.alwaysOriginal))
 
     private var menuStackView = UIStackView()
-    private var shopStackView = UIStackView()
-    private var detailsStackView = UIStackView()
-    private var featuresStackView = UIStackView()
+    private var shopStackView = ShopStackView()
+    private var detailsStackView = DetailsStackView()
+    private var featuresStackView = FeaturesStackView()
     
     private var hardwareStackView = UIStackView()
-    private var cpuStackView = UIStackView()
-    private var cameraStackView = UIStackView()
-    private var ssdStackView = UIStackView()
-    private var sdStackView = UIStackView()
+    private var cpuStackView = CPUStackView()
+    private var cameraStackView = CameraStackView()
+    private var ssdStackView = SSDStackView()
+    private var sdStackView = SDStackView()
     
-    private var equipmentStackView = UIStackView()
-    private var buttonsStackView = UIStackView()
+    private lazy var equipmentStackView = EquipmentStackView(viewModel: viewModel)
     
     
     var viewModel: DetailViewModel!
     private var characteristics: Characteristics?
-    
-    var productsToBuy: Int = 0
     
     var detailsCollectionViewManager = DetailCollectionViewManager()
     lazy var detailsCollectionView = detailsCollectionViewManager.collectionView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        addtoCartButton.layer.cornerRadius = 10
+        detailsView.backgroundColor = .white
         
         view.backgroundColor = .mainWhite()
         characteristics = viewModel.characteristics
@@ -86,29 +60,12 @@ class DetailViewController: UIViewController {
         setupViews()
         setupConstraints()
         
-        detailsView.backgroundColor = .white
-        
-        [shopLineView, detailsLineView, featuresLineView].forEach { view in
+        [shopStackView.shopLineView, detailsStackView.detailsLineView, featuresStackView.featuresLineView].forEach { view in
             view.backgroundColor = .white
         }
-        
-        likeButton.backgroundColor = .mainBlue()
-        likeButton.layer.cornerRadius = 10
-        
-        addtoCartButton.layer.cornerRadius = 10
-        
-        ratingView.isUserInteractionEnabled = false
-        ratingView.settings.fillMode = .half
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-
     }
     
     override func viewDidLayoutSubviews() {
-        firstColorButton.layer.cornerRadius = firstColorButton.frame.width / 2
-        secondColorButton.layer.cornerRadius = secondColorButton.frame.width / 2
-        
         detailsView.layer.cornerRadius = 30
         detailsView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
     }
@@ -135,23 +92,14 @@ extension DetailViewController {
         print(#function)
     }
     
-    @objc private func handleColorTap(sender: UIButton) {
-        let colorButtonsArray = [firstColorButton, secondColorButton]
-        viewModel.handleColorTap(sender: sender, buttons: colorButtonsArray)
-    }
-    
     @objc private func menuHandleTap(sender: UIButton) {
         viewModel.menuHandleTap(sender: sender,
-                                shopButton: shopButton,
-                                shopView: shopLineView,
-                                detailsButton: detailsButton,
-                                detailsView: detailsLineView,
-                                featuresButton: featuresButton,
-                                featuresView: featuresLineView)
-    }
-    
-    @objc private func handleAddToCartTap() {
-        productsToBuy += 1
+                                shopButton: shopStackView.shopButton,
+                                shopView: shopStackView.shopLineView,
+                                detailsButton: detailsStackView.detailsButton,
+                                detailsView: detailsStackView.detailsLineView,
+                                featuresButton: featuresStackView.featuresButton,
+                                featuresView: featuresStackView.featuresLineView)
     }
 }
 
@@ -159,24 +107,16 @@ extension DetailViewController {
 extension DetailViewController {
     private func setupViews() {
         
-        equipmentLabel.text = "Select color and capacity"
+        equipmentLabel.text = Constants.equipmentLabel
         
-        [shopButton, detailsButton, featuresButton].forEach { button in
+        [shopStackView.shopButton, detailsStackView.detailsButton, featuresStackView.featuresButton].forEach { button in
             button.titleLabel?.font = .markProRegular20()
             button.titleLabel?.tintColor = .black.withAlphaComponent(0.5)
         }
         
-        shopButton.setTitle("Shop", for: .normal)
-        detailsButton.setTitle("Details", for: .normal)
-        featuresButton.setTitle("Features", for: .normal)
-        
-        firstColorButton.addTarget(self, action: #selector(handleColorTap), for: .touchUpInside)
-        secondColorButton.addTarget(self, action: #selector(handleColorTap), for: .touchUpInside)
-        
-        shopButton.addTarget(self, action: #selector(menuHandleTap), for: .touchUpInside)
-        detailsButton.addTarget(self, action: #selector(menuHandleTap), for: .touchUpInside)
-        featuresButton.addTarget(self, action: #selector(menuHandleTap), for: .touchUpInside)
-        addtoCartButton.addTarget(self, action: #selector(handleAddToCartTap), for: .touchUpInside)
+        shopStackView.shopButton.addTarget(self, action: #selector(menuHandleTap), for: .touchUpInside)
+        detailsStackView.detailsButton.addTarget(self, action: #selector(menuHandleTap), for: .touchUpInside)
+        featuresStackView.featuresButton.addTarget(self, action: #selector(menuHandleTap), for: .touchUpInside)
         
         addtoCartButton.setTitle(priceString, for: .normal)
         addtoCartButton.titleLabel?.font = .markProBold20()
@@ -184,60 +124,12 @@ extension DetailViewController {
         addtoCartButton.backgroundColor = .mainOrange()
         addtoCartButton.tintColor = .white
         
-        shopStackView = UIStackView(arrangedSubviews: [shopButton,
-                                                       shopLineView],
-                                    axis: .vertical,
-                                    spacing: 4,
-                                    distribution: .fill,
-                                    alignment: .fill)
-        detailsStackView = UIStackView(arrangedSubviews: [detailsButton,
-                                                          detailsLineView],
-                                    axis: .vertical,
-                                    spacing: 4,
-                                    distribution: .fill,
-                                    alignment: .fill)
-        featuresStackView = UIStackView(arrangedSubviews: [featuresButton,
-                                                           featuresLineView],
-                                    axis: .vertical,
-                                    spacing: 4,
-                                    distribution: .fill,
-                                    alignment: .fill)
-        
         menuStackView = UIStackView(arrangedSubviews: [shopStackView,
                                                        detailsStackView,
                                                        featuresStackView],
                                     axis: .horizontal,
                                     spacing: 40,
                                     distribution: .fillEqually,
-                                    alignment: .fill)
-        
-        
-        cpuStackView = UIStackView(arrangedSubviews: [cpuImageView,
-                                                      cpuLabel],
-                                    axis: .vertical,
-                                    spacing: 0,
-                                    distribution: .fill,
-                                    alignment: .fill)
-        
-        cameraStackView = UIStackView(arrangedSubviews: [cameraImageView,
-                                                         cameraLabel],
-                                    axis: .vertical,
-                                    spacing: 5,
-                                    distribution: .fill,
-                                    alignment: .fill)
-        
-        ssdStackView = UIStackView(arrangedSubviews: [ssdImageView,
-                                                      ssdLabel],
-                                    axis: .vertical,
-                                    spacing: 5,
-                                    distribution: .fill,
-                                    alignment: .fill)
-        
-        sdStackView = UIStackView(arrangedSubviews: [sdImageView,
-                                                     sdLabel],
-                                    axis: .vertical,
-                                    spacing: 5,
-                                    distribution: .fill,
                                     alignment: .fill)
         
         hardwareStackView = UIStackView(arrangedSubviews: [cpuStackView,
@@ -249,21 +141,6 @@ extension DetailViewController {
                                         distribution: .fillProportionally,
                                     alignment: .bottom)
         
-        buttonsStackView = UIStackView(arrangedSubviews: [firstColorButton,
-                                                          secondColorButton],
-                                          axis: .horizontal,
-                                          spacing: 16,
-                                          distribution: .fill,
-                                          alignment: .fill)
-        
-        
-        equipmentStackView = UIStackView(arrangedSubviews: [buttonsStackView,
-                                                            capacitySegmentedControl],
-                                         axis: .horizontal,
-                                         spacing: 58,
-                                         distribution: .equalSpacing,
-                                         alignment: .center)
-        
         view.addSubview(detailsCollectionView)
         view.addSubview(detailsView)
         
@@ -273,46 +150,37 @@ extension DetailViewController {
         detailsView.addSubview(equipmentView)
         detailsView.addSubview(addtoCartButton)
         
-        detailsTopView.addSubview(phoneNameLabel)
-        detailsTopView.addSubview(ratingView)
-        detailsTopView.addSubview(likeButton)
-        
         equipmentView.addSubview(equipmentLabel)
         equipmentView.addSubview(equipmentStackView)
     }
     
     private func setDetailsData(withCharacteristics characteristics: Characteristics) {
-        phoneNameLabel.text = characteristics.title
-        ratingView.rating = characteristics.rating
-        cpuLabel.text = characteristics.cpu
-        cameraLabel.text = characteristics.camera
-        ssdLabel.text = characteristics.ssd
-        sdLabel.text = characteristics.sd
+        detailsTopView.phoneNameLabel.text = characteristics.title
+        detailsTopView.ratingView.rating = characteristics.rating
+        cpuStackView.cpuLabel.text = characteristics.cpu
+        cameraStackView.cameraLabel.text = characteristics.camera
+        ssdStackView.ssdLabel.text = characteristics.ssd
+        sdStackView.sdLabel.text = characteristics.sd
         
-        capacitySegmentedControl.items = characteristics.capacity
+        equipmentStackView.capacitySegmentedControl.items = characteristics.capacity
         
         priceString.append(String(repeating: " ", count: 10))
         priceString.append("$\(characteristics.price).00")
         
         if let firstColor = characteristics.color.first,
            let secondColor = characteristics.color.last {
-            firstColorButton.backgroundColor = UIColor.hexStringToUIColor(hex: firstColor)
-            secondColorButton.backgroundColor = UIColor.hexStringToUIColor(hex: secondColor)
+            equipmentStackView.buttonsStackView.firstColorButton.backgroundColor = UIColor.hexStringToUIColor(hex: firstColor)
+            equipmentStackView.buttonsStackView.secondColorButton.backgroundColor = UIColor.hexStringToUIColor(hex: secondColor)
         }
         
         var likeImage = UIImage()
         if characteristics.isFavorites {
             likeImage = #imageLiteral(resourceName: "feelLikeImage").withRenderingMode(.alwaysOriginal)
-            likeButton.setImage(likeImage, for: .normal)
+            detailsTopView.likeButton.setImage(likeImage, for: .normal)
         } else {
             likeImage = #imageLiteral(resourceName: "favoriteTab").withRenderingMode(.alwaysOriginal)
-            likeButton.setImage(likeImage, for: .normal)
+            detailsTopView.likeButton.setImage(likeImage, for: .normal)
         }
-    }
-    
-    private static func createView() -> UIView {
-        let view = UIView()
-        return view
     }
     
     private func setupNavigationBar() {
@@ -375,25 +243,6 @@ extension DetailViewController {
             make.height.equalTo(55)
         }
         
-        phoneNameLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.leading.equalToSuperview()
-        }
-        
-        ratingView.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.bottom.equalToSuperview()
-            make.width.equalTo(126)
-            make.height.equalTo(18)
-        }
-        
-        likeButton.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.trailing.equalToSuperview()
-            make.width.equalTo(37)
-            make.height.equalTo(33)
-        }
-        
         menuStackView.snp.makeConstraints { make in
             make.top.equalTo(detailsTopView.snp.bottom).offset(32)
             make.leading.equalToSuperview().inset(27)
@@ -401,7 +250,7 @@ extension DetailViewController {
             make.height.equalTo(33)
         }
         
-        let views = [shopLineView, detailsLineView, featuresLineView]
+        let views = [shopStackView.shopLineView, detailsStackView.detailsLineView, featuresStackView.featuresLineView]
         
         for view in views {
             view.backgroundColor = .mainOrange()
@@ -418,7 +267,7 @@ extension DetailViewController {
             make.height.equalTo(47)
         }
     
-        let paramtersImageViews = [cpuImageView, cameraImageView, ssdImageView, sdImageView]
+        let paramtersImageViews = [cpuStackView.cpuImageView, cameraStackView.cameraImageView, ssdStackView.ssdImageView, sdStackView.sdImageView]
         
         for paramtersImageView in paramtersImageViews {
             paramtersImageView.contentMode = .scaleAspectFit
@@ -440,19 +289,6 @@ extension DetailViewController {
             make.top.equalTo(equipmentLabel.snp.bottom).offset(15)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
-        }
-        
-        firstColorButton.snp.makeConstraints { make in
-            make.width.height.equalTo(39)
-        }
-        
-        secondColorButton.snp.makeConstraints { make in
-            make.width.height.equalTo(39)
-        }
-        
-        capacitySegmentedControl.snp.makeConstraints { make in
-            make.width.equalTo(142)
-            make.height.equalTo(30)
         }
         
         addtoCartButton.snp.makeConstraints { make in

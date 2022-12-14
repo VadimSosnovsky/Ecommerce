@@ -8,21 +8,10 @@
 import Foundation
 import Alamofire
 
-protocol NetworkServiceProtocol {
-    func fetchCart(completion: @escaping (Cart?) -> Void)
-    func fetchPhones(completion: @escaping (Phones?) -> Void)
-    func fetchCharasteristics(completion: @escaping (Characteristics?) -> Void)
-    func loadImages(from url: URL, completion: @escaping (UIImage) -> Void)
-    func decodeJSON<T: Decodable>(_ type: T.Type, data: Data) -> T
-    var cache: NSCache<AnyObject, UIImage> { get }
-}
-
 final class NetworkService: NetworkServiceProtocol {
     
     static let shared = NetworkService()
     private init() {}
-    
-    private(set) var cache = NSCache<AnyObject, UIImage>()
     
     func fetchPhones(completion: @escaping (Phones?) -> Void) {
         let url = Environment.searchPhonesURL
@@ -72,27 +61,6 @@ final class NetworkService: NetworkServiceProtocol {
             guard let data = dataResponse.data else { return }
             let resultData = self.decodeJSON(Cart.self, data: data)
             completion(resultData)
-        }
-    }
-    
-    func loadImages(from url: URL, completion: @escaping (UIImage) -> Void) {
-        
-        if let cachedImage = cache.object(forKey: url as AnyObject) {
-            completion(cachedImage)
-        } else {
-            AF.request(url, method: .get).responseData { (dataResponse) in
-                guard let data = dataResponse.data else {
-                    print("Error: \(String(describing: dataResponse.error))")
-                    return
-                }
-                
-                DispatchQueue.main.async {
-                    let image = UIImage(data: data)
-                    guard let image = image else { return }
-                    completion(image)
-                    self.cache.setObject(image, forKey: url as AnyObject)
-                }
-            }
         }
     }
     

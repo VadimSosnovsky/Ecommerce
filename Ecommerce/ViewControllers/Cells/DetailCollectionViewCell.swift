@@ -10,7 +10,7 @@ import SDWebImage
 
 class DetailCollectionViewCell: UICollectionViewCell {
     
-    static let reuseId = "DetailCollectionViewCell"
+    static let reuseId = Constants.detailCollectionViewCell
     
     private let detailImageView = UIImageView()
     
@@ -34,6 +34,7 @@ class DetailCollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        detailImageView.image = nil
     }
     
     required init?(coder: NSCoder) {

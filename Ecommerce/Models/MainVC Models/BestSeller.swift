@@ -8,14 +8,12 @@
 import Foundation
 
 struct BestSeller: Decodable {
-    let id: Int
     let title: String
     let priceWithoutDiscount: Int
     let discountPrice: Int
     let pictureUrl: String
 
     enum CodingKeys: String, CodingKey {
-        case id
         case title
         case priceWithoutDiscount = "price_without_discount"
         case discountPrice = "discount_price"

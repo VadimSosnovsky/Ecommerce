@@ -10,7 +10,7 @@ import SDWebImage
 
 class BestSellerCollectionViewCell: UICollectionViewCell {
     
-    static let reuseId = "BestSellerCollectionViewCell"
+    static let reuseId = Constants.bestSellerCollectionViewCell
     
     private let phoneImageView = UIImageView()
     private let priceWithoutDiscountLabel = UILabel(font: .markProBold16(), textColor: .mainBlue())
@@ -46,6 +46,7 @@ class BestSellerCollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        phoneImageView.image = nil
     }
     
     required init?(coder: NSCoder) {
@@ -93,8 +94,10 @@ extension BestSellerCollectionViewCell {
         addSubview(phoneImageView)
         addSubview(favoriteButton)
         addSubview(pricesView)
+        
         pricesView.addSubview(priceWithoutDiscountLabel)
         pricesView.addSubview(priceWithDiscountLabel)
+        
         addSubview(phoneNameLabel)
     }
 }

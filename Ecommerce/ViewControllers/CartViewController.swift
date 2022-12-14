@@ -12,30 +12,24 @@ class CartViewController: UIViewController {
     private let titleLabel = UILabel(font: .markProBold35(), textColor: .mainBlue())
     private let locationLabel = UILabel(font: .markProMedium15(), textColor: .mainBlue())
     
-    private let totalLabel = UILabel(font: .markProRegular15(), textColor: .white)
-    private let deliveryLabel = UILabel(font: .markProRegular15(), textColor: .white)
-    
-    private let totalValueLabel = UILabel(font: .markProBold15(), textColor: .white)
-    private let deliveryValueLabel = UILabel(font: .markProBold15(), textColor: .white)
-    
-    private let mainView = createView()
-    private let separatorBoldView = createView()
-    private let separatorThinView = createView()
+    private let mainView = UIView.createView()
+    private let separatorBoldView = UIView.createView()
+    private let separatorThinView = UIView.createView()
     
     private let checkoutButton = UIButton(type: .system)
     
     var cartTableViewManager = CartTableViewManager()
     lazy var cartTableView = cartTableViewManager.tableView
     
-    private var checkStackView = UIStackView()
-    private var checkLeftStackView = UIStackView()
-    private var checkRightStackView = UIStackView()
+    private var checkStackView = CheckStackView()
     
     var viewModel: CartViewModel!
     var totalPrice = 0
-    var badgeCount = 2
+    var badgeCount = 0
     
-    var handleUpdatedDataDelegate: DataUpdateProtocol?
+    var handleUpdatedDataDelegate: BadgeCountUpdateProtocol?
+    lazy var totalValueLabel = checkStackView.checkRightStackView.totalValueLabel
+    lazy var deliveryValueLabel = checkStackView.checkRightStackView.deliveryValueLabel
     
     override func viewWillLayoutSubviews() {
         
@@ -44,15 +38,23 @@ class CartViewController: UIViewController {
         for currentCell in 0...cells {
             var cell = cartTableView.cellForRow(at: IndexPath(row: 0, section: currentCell)) as? CartTableViewCell
 
-            cell?.closure = {
+            cell?.closure = { [weak self] in
                 var total = 0
-                self.badgeCount = 0
+                self?.badgeCount = 0
                 for item in 0...cells {
-                    cell = self.cartTableView.cellForRow(at: IndexPath(row: 0, section: item)) as? CartTableViewCell
-                    total += Int(cell?.priceLabel.text?.dropLast(4) ?? "") ?? 0
-                    self.badgeCount += Int(cell?.countLabel.text ?? "") ?? 0
+                    cell = self?.cartTableView.cellForRow(at: IndexPath(row: 0, section: item)) as? CartTableViewCell
+                    
+                    guard let cell = cell,
+                          let totalValue = cell.priceLabel.text?.dropLast(4),
+                          let totalValueInt = Int(totalValue),
+                          let badgeCount = cell.countLabel.text,
+                          let badgeCountInt = Int(badgeCount)
+                    else { return }
+                    
+                    total += totalValueInt
+                    self?.badgeCount += badgeCountInt
+                    self?.totalValueLabel.text = "$\(total) us"
                 }
-                self.totalValueLabel.text = "$\(total) us"
             }
         }
     }
@@ -60,21 +62,17 @@ class CartViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        checkoutButton.layer.cornerRadius = 10
+        
         view.backgroundColor = .mainWhite()
         mainView.backgroundColor = .mainBlue()
         
         cartTableView.backgroundColor = .mainBlue()
         
-        checkoutButton.layer.cornerRadius = 10
-        
         separatorBoldView.backgroundColor = .white.withAlphaComponent(0.25)
         separatorThinView.backgroundColor = .white.withAlphaComponent(0.20)
         
-        [totalLabel, totalValueLabel, deliveryLabel, deliveryValueLabel].forEach { label in
-            label.textAlignment = .left
-        }
-        
-        viewModel.loadCartPhones { cart in
+        viewModel.loadCartPhones { [unowned self] cart in
             self.cartTableViewManager.basket = cart.basket
             
             self.cartTableViewManager.basket.forEach { basket in
@@ -96,7 +94,7 @@ class CartViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        handleUpdatedDataDelegate?.onDataUpdate(badgeCount: badgeCount)
+        handleUpdatedDataDelegate?.onBadgeCountUpdate(badgeCount: badgeCount)
     }
     
     override func viewDidLayoutSubviews() {
@@ -121,38 +119,13 @@ extension CartViewController {
 extension CartViewController {
     private func setupViews() {
         
-        titleLabel.text = "My Cart"
-        locationLabel.text = "Add address"
+        titleLabel.text = Constants.titleLabel
+        locationLabel.text = Constants.locationMarkLabel
         
-        totalLabel.text = "Total"
-        deliveryLabel.text = "Delivery"
-        
-        checkoutButton.setTitle("Checkout", for: .normal)
+        checkoutButton.setTitle(Constants.checkoutButtonTitle, for: .normal)
         checkoutButton.titleLabel?.font = .markProBold20()
-        
         checkoutButton.backgroundColor = .mainOrange()
         checkoutButton.tintColor = .white
-        
-        checkLeftStackView = UIStackView(arrangedSubviews: [totalLabel,
-                                                            deliveryLabel],
-                                         axis: .vertical,
-                                         spacing: 12,
-                                         distribution: .fill,
-                                         alignment: .fill)
-        
-        checkRightStackView = UIStackView(arrangedSubviews: [totalValueLabel,
-                                                            deliveryValueLabel],
-                                         axis: .vertical,
-                                         spacing: 12,
-                                         distribution: .fill,
-                                         alignment: .fill)
-        
-        checkStackView = UIStackView(arrangedSubviews: [checkLeftStackView,
-                                                        checkRightStackView],
-                                         axis: .horizontal,
-                                         spacing: 185,
-                                         distribution: .fill,
-                                         alignment: .fill)
         
         view.addSubview(titleLabel)
         view.addSubview(mainView)
@@ -162,15 +135,6 @@ extension CartViewController {
         mainView.addSubview(checkStackView)
         mainView.addSubview(separatorThinView)
         mainView.addSubview(checkoutButton)
-    }
-    
-    private func setDetailsData(withCharacteristics characteristics: Characteristics) {
-
-    }
-    
-    private static func createView() -> UIView {
-        let view = UIView()
-        return view
     }
     
     private func setupNavigationBar() {

@@ -13,7 +13,7 @@ class CategoriesStackView: UIStackView {
     static func createButton(image: UIImage) -> UIButton {
         let button = UIButton(type: .system)
         button.setImage(image, for: .normal)
-        button.tintColor = #colorLiteral(red: 0.7019607843, green: 0.7019607843, blue: 0.7647058824, alpha: 1)
+        button.tintColor = .lightGrey()
         button.imageView?.contentMode = .scaleAspectFill
         button.backgroundColor = .white
         return button
@@ -29,9 +29,17 @@ class CategoriesStackView: UIStackView {
         distribution = .equalSpacing
         axis = .horizontal
         
-        snp.makeConstraints { make in
-            make.height.equalTo(93)
-        }
+        setupViews()
+    }
+    
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+// MARK: - Setup Views
+extension CategoriesStackView {
+    private func setupViews() {
 
         let subviews = [phonesCategoryButton,
                         computersCategoryButton,
@@ -52,21 +60,17 @@ class CategoriesStackView: UIStackView {
             
         
             stackView.snp.makeConstraints { make in
-                make.width.equalTo(71)
+                make.width.equalTo(Constants.categoriesViewsHeight)
             }
             
             addArrangedSubview(stackView)
             
             button.snp.makeConstraints { make in
-                make.width.equalTo(71)
-                make.height.equalTo(71)
+                make.width.equalTo(Constants.categoriesViewsHeight)
+                make.height.equalTo(Constants.categoriesViewsHeight)
             }
             
-            button.layer.cornerRadius = 71 / 2
+            button.layer.cornerRadius = Constants.categoriesViewsHeight / 2
         }
-    }
-    
-    required init(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

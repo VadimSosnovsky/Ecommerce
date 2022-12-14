@@ -20,7 +20,7 @@ class FilterTextField: UITextField {
         clipsToBounds = true
         layer.cornerRadius = 5
         backgroundColor = .white
-        layer.borderColor = #colorLiteral(red: 0.862745098, green: 0.862745098, blue: 0.862745098, alpha: 1)
+        layer.borderColor = UIColor.lightGrey().cgColor
         layer.borderWidth = 1
         
         if let rightImageName = rightImageName {

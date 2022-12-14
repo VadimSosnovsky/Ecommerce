@@ -12,20 +12,19 @@ class CustomTabBarController: UITabBarController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        tabBar.backgroundColor = .mainBlue()
         tabBar.layer.cornerRadius = 30
+        tabBar.backgroundColor = .mainBlue()
         changeHeightOfTabBar()
-        
-        //setUpTabBar()
     }
     
     override func viewDidLoad() {
         setUpTabBar()
         
-        self.tabBar.itemWidth = 50
+        tabBar.itemWidth = Constants.tabBarItemWidth
+        tabBar.itemSpacing = Constants.tabBarItemSpacing
+        tabBar.itemPositioning = .centered
         
-        tabBar.itemSpacing = 40
-        //self.tabBar.itemPositioning = .centered
+        UITabBarItem.appearance().titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 777)
     }
     
     private func changeHeightOfTabBar() {
@@ -48,12 +47,11 @@ class CustomTabBarController: UITabBarController {
     }
     
     func createTabBarItem(withImage image: UIImage?, tag: Int) -> UITabBarItem {
-        tabBarItem = UITabBarItem.init(title: "",
+        tabBarItem = UITabBarItem.init(title: "title",
                                        image: image,
                                        tag: tag)
         
-        tabBarItem.imageInsets = UIEdgeInsets.init(top: 15, left: 0, bottom: -15, right: 0)
-        
+        tabBarItem.imageInsets = Constants.tabBarItemImageInsets
         return tabBarItem
     }
     
@@ -79,16 +77,13 @@ class CustomTabBarController: UITabBarController {
                                                       height: height),
                                   cornerRadius: height / 2).cgPath
         
-        // tab bar shadow
         layer.shadowColor = tColor?.cgColor
         layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
         layer.shadowRadius = 5.0
         layer.shadowOpacity = 0.5
         
-        // add tab bar layer
         self.tabBar.layer.addSublayer(layer)
         
-        // fix items positioning
         self.tabBar.itemWidth = 100
         self.tabBar.itemPositioning = .centered
         self.tabBar.unselectedItemTintColor = sColor

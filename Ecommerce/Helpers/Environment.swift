@@ -9,9 +9,9 @@ import Foundation
 
 public enum Environment {
     enum Keys {
-        static let searchPhonesUrl = "SEARCH_PHONES_URL"
-        static let searchDetailsUrl = "SEARCH_DETAILS_URL"
-        static let searchCartUrl = "SEARCH_CART_URL"
+        static let searchPhonesUrl = Constants.searchPhonesUrl
+        static let searchDetailsUrl = Constants.searchDetailsUrl
+        static let searchCartUrl = Constants.searchCartUrl
     }
     
     private static let infoDictionary: [String: Any] = {

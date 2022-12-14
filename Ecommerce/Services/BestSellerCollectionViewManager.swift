@@ -50,6 +50,6 @@ extension BestSellerCollectionViewManager: UICollectionViewDelegate, UICollectio
 
 extension BestSellerCollectionViewManager: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 181, height: 227)
+        return Constants.bestSellerCellSize
     }
 }

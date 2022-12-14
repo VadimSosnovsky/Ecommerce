@@ -9,8 +9,8 @@ import UIKit
 
 class PagingCollectionViewLayout: UICollectionViewFlowLayout {
     
-    var velocityThresholdPerPage: CGFloat = 2
-    var numberOfItemsPerPage: CGFloat = 1
+    var velocityThresholdPerPage: CGFloat = Constants.velocityThresholdPerPage
+    var numberOfItemsPerPage: CGFloat = Constants.numberOfItemsPerPage
     
     override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
         guard let collectionView = collectionView else { return proposedContentOffset }

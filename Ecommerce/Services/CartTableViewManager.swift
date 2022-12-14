@@ -39,13 +39,13 @@ extension CartTableViewManager: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section != 0 {
-            return "Title"
+            return Constants.tableViewHeaderTitle
         }
-        return ""
+        return Constants.tableViewEmptyHeaderTitle
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        26
+        return Constants.heightForHeaderInSection
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -59,7 +59,7 @@ extension CartTableViewManager: UITableViewDataSource {
 
 extension CartTableViewManager: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 88
+        return Constants.heightForRowAt
     }
 
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
